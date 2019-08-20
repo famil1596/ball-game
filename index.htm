@@ -1,0 +1,112 @@
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Bar Ball Games</title>
+    <style>
+        body {
+            display: flex;
+            background: silver;
+        }
+
+        #oyun {
+            background: #FFF;
+            width: 800px;
+            height: 600px;
+            margin: auto;
+            position: relative;
+        }
+
+        #ball {
+            width: 50px;
+            height: 50px;
+            background-image: url("ball.png");
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        #score_div {
+            text-align: center;
+        }
+
+        #bar {
+            width: 100px;
+            height: 20px;
+            background: gray;
+            position: absolute;
+            left: 0;
+            top: 600px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div id="oyun">
+        <div id="score_div">
+            <b>Score: </b> <span id="score">0</span>
+        </div>
+        <div id="ball"></div>
+        <div id="bar"></div>
+    </div>
+
+    <script>
+        let ball = document.getElementById("ball");
+        let bar = document.getElementById("bar");
+        let score = document.getElementById("score");
+        let barX = 0;
+        let ballX = 0;
+        let ballY = 0;
+        let dx = 3;
+        let dy = 3;
+        let interval = setInterval(ballMove, 24);
+        let count = 0;
+        document.onkeydown = Key;
+
+        function Key(e) {
+            e = e || window.event;
+            if (e.keyCode == "37") {
+                if (barX > 0) barX -= 10;
+            }
+            if (e.keyCode == "39") {
+                if (barX < 700) barX += 10;
+            }
+            barMove();
+        }
+
+        function barMove() {
+            bar.style.left = barX + "px";
+        }
+
+        function ballMove() {
+            if (ballX < 0 || ballX > 750) {
+                dx *= -1;
+            }
+            if (ballY < 0 || ballY > 550) {
+                dy *= -1;
+            }
+
+            if (ballY > 550) {
+                if (ballX > (barX - 50) && ballX < (barX + 100)) {
+                    dy *= 1.1;
+                    count++;
+                    score.innerHTML = count;
+                } else {
+                    clearInterval(interval);
+                    swal("Uduzdun!", "Təəssüf ki,uduzdun! xalın:" + count, "error");
+                }
+            }
+
+            ballX += dx;
+            ballY += dy;
+            ball.style.left = ballX + "px";
+            ball.style.top = ballY + "px";
+        }
+    </script>
+
+</body>
+
+</html>
